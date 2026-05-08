@@ -12,7 +12,18 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+    origin(origin, callback) {
+      const allowedOrigins = [
+        process.env.CLIENT_ORIGIN,
+        "http://localhost:5173",
+        "https://chatgpttopdf.vercel.app",
+      ].filter(Boolean);
+
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
   })
 );
 app.use(express.json({ limit: "1mb" }));
@@ -73,6 +84,10 @@ app.post("/api/convert/pdf", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
