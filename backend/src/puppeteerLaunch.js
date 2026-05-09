@@ -6,7 +6,8 @@ const puppeteer = require("puppeteer");
  */
 function getLaunchOptions() {
   const opts = {
-    headless: true,
+    // Matches `puppeteer browsers install chrome-headless-shell` (smaller; works on Render).
+    headless: "shell",
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",

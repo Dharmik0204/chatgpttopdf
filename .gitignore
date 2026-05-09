@@ -1,3 +1,6 @@
+# Puppeteer browser cache (recreated on npm install / deploy)
+**/.puppeteer-cache/
+
 # dependencies
 node_modules/
 **/node_modules/

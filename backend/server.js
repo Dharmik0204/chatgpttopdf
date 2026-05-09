@@ -1,11 +1,20 @@
+const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+// Puppeteer: default cache is ~/.cache/puppeteer on Render and may not match runtime.
+// Install browsers into backend/.puppeteer-cache (postinstall) unless using system Chromium.
+if (!process.env.PUPPETEER_EXECUTABLE_PATH) {
+  process.env.PUPPETEER_CACHE_DIR =
+    process.env.PUPPETEER_CACHE_DIR || path.join(__dirname, ".puppeteer-cache");
+}
+
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const { validateSharedChatUrl } = require("./src/utils/validateUrl");
 const { extractConversationFromUrl } = require("./src/services/chatExtractor");
 const { buildConversationPdf } = require("./src/services/pdfService");
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
