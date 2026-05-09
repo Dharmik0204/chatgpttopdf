@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer");
+const { launchBrowser } = require("../puppeteerLaunch");
 
 function escapeHtml(input) {
   return String(input || "")
@@ -122,10 +122,7 @@ function buildConversationHtml(conversation) {
 }
 
 async function buildConversationPdf(conversation) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();

@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const puppeteer = require("puppeteer");
+const { launchBrowser } = require("../puppeteerLaunch");
 
 function normalizeText(rawText) {
   return String(rawText || "")
@@ -145,10 +145,7 @@ function extractFromDom(html) {
 }
 
 async function fetchRenderedHtml(url) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();
